@@ -11,6 +11,7 @@ GAME RULES:
 
 var scores, roundScore, activePlayer, gamePlaying;
 init();
+var previousRoll;
 // dice = Math.floor(Math.random() * 6) + 1;
 
 
@@ -51,38 +52,72 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if(gamePlaying){
 
-
+    console.log(previousRoll);
 
     //1. Random Number
     var dice = Math.floor(Math.random() * 6) + 1;
+    var dice2 = Math.floor(Math.random() * 6) + 1;
+
 
 
     //2. display the result
-    var diceDOM = document.querySelector('.dice');
-    diceDOM.style.display = 'block';
-    //type coersion means below becomes 'dice-1.png'
-    diceDOM.src = 'dice-' + dice + '.png';
+    // var diceDOM = document.querySelector('.dice');
+    // diceDOM.style.display = 'block';
+    // var diceDOM2 = document.querySelector('.dice2');
+    // diceDOM.style.display = 'block';
+    // //type coersion means below becomes 'dice-1.png'
+    // diceDOM.src = 'dice-' + dice + '.png';
+    // diceDOM2.src = 'dice-' + dice2 + '.png';
+
+    document.getElementById('dice1').style.display = 'block';
+    document.getElementById('dice2').style.display = 'block';
+    document.getElementById('dice1').src = 'dice-' + dice + '.png';
+    document.getElementById('dice2').src = 'dice-' + dice2 + '.png';
+
+
+
+
     // console.log(diceDOM);
 
 
 
 
-
+////////only relevant for extension 2
     //3. update round score if rolled number != 1
-    if (dice !== 1) {
+    // if (dice === 6 && previousRoll === 6) ||
+    //     {
+    //   //player loses score
+    //   scores[activePlayer] = 0;
+    //   document.querySelector('#score-' + activePlayer).textContent = '0';
+    //   nextPlayer();
+    // }
+    //  else if (dice !== 1) {
+    //   //add score
+    //   roundScore += dice;
+    //   document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    //
+    // } else {
+    //   nextPlayer();
+    // }
+    // previousRoll1 = dice;
+    // previousRoll2 = dice2;
+////////
+
+
+
+    if (dice !== 1 && dice2 !== 1) {
       //add score
-      roundScore += dice;
+      roundScore += dice + dice2;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
 
     } else {
       nextPlayer();
     }
-
   }
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function(){
-
+if (gamePlaying) {
   //add current score to global score
   //access player score by index
   // player 0 = index[0]
@@ -94,17 +129,23 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
   document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
 
+  var input = document.querySelector('.final-score').value
+  var winningScore;
 
-
-
+  if(input){
+    winningScore = input;
+  } else {
+    winningScore = 100;
+  }
   //check if player won the game
 
 
-  if (scores[activePlayer] >= 20){
+  if (scores[activePlayer] >= winningScore){
     document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
-      document.querySelector('.dice').style.display = 'none';
+      document.querySelector('#dice1').style.display = 'none';
+      document.querySelector('#dice2').style.display = 'none';
     gamePlaying = false;
 
   } else {
@@ -113,7 +154,7 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
     document.querySelector('.dice').style.display = 'none';
 
   }
-
+}
 })
 
 
@@ -127,6 +168,9 @@ function nextPlayer() {
 
   document.querySelector('#current-0').textContent = 0;
   document.querySelector('#current-1').textContent = 0;
+
+  document.querySelector('#dice1').style.display = 'none';
+  document.querySelector('#dice2').style.display = 'none';
 }
 
 //waits until click before init() is called
@@ -141,7 +185,8 @@ function init(){
     activePlayer = 0;
     gamePlaying = true;
 
-    document.querySelector('.dice').style.display = 'none';
+    document.querySelector('#dice1').style.display = 'none';
+    document.querySelector('#dice2').style.display = 'none';
 
     //can use query or id
     //this extracts the global score and current score for both players
