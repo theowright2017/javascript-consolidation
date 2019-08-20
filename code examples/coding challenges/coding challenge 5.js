@@ -63,7 +63,7 @@ console.log(mark.finalAmounts);
 console.log(mark.tips);
 
 
-//calculate average of tips 
+//calculate average of tips
 var average = function(tips){
   var total = 0;
   for ( var i = 0; i < tips.length; i++){
